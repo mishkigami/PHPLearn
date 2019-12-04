@@ -17,7 +17,7 @@
 require_once 'db_config.php';
 
 function getWordsFromString($string) {
-    if (preg_match_all("/\b(\w+)\b/ui", $string, $matches)) {
+        if (preg_match_all("/\b(\w+)\b/ui", $string, $matches)) {
         return $matches[1];
     }
 
@@ -60,28 +60,16 @@ $sth = $conn->prepare("INSERT INTO `texts` SET `text` = :text");
 $sth->execute(array('text' => $text));
 
 $words = getWordsFromString($text);
-echo "<br>";
-print_r($words);
 
-echo "<br>";
 $result = getResult($words);
-print_r($result);
 
-echo "<br>";
 $words_count = count($words);
-print_r($words_count);
 
-echo "<br>";
 $uniq_words_count = count($result);
-print_r($uniq_words_count);
 
-echo "<br>";
 $last_id = $conn->lastInsertId();
-print_r($last_id);
 
-echo "<br>";
 $hash_value = uniqid($last_id);
-print_r($hash_value);
 
 $csv_text = makeCsvFromResult($result, $words_count, $uniq_words_count);
 
@@ -92,10 +80,6 @@ $sth->execute(array(
     'result_csv' => $csv_text,
     'words_count' => $words_count,
     'uniq_words_count' => $uniq_words_count));
-$sth->errorInfo();
- print_r($sth);
-print_r($sth->errorInfo());
-preg_last_error();
 
 saveToCsv($csv_text, "{$hash_value}.csv");
 
